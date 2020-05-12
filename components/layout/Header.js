@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
-import Buscar from '../ui/buscar';
+import Buscar from '../ui/Buscar';
 import Navegacion from './Navegacion';
 import Boton from '../ui/Boton'
 
@@ -38,7 +38,12 @@ const Header = () => {
       `}
     >
       <ContenedorHeader>
-        <div>
+        <div
+          css = {css`
+            display: flex;
+            align-items: center;
+          `}
+        >
           <Link href="/">
             <Logo>P</Logo>
           </Link>
