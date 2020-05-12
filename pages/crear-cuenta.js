@@ -4,7 +4,41 @@ import Layout from '../components/layout/Layout';
 const CrearCuenta = () => (
   <div>
     <Layout>
+      <>
       <h1>Crear Cuenta</h1>
+      <form>
+        <div>
+          <label htmlFor="nombre">Nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            placeholder="Tu Nombre"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+          />
+        </div>
+
+        <input type="submit"
+          value="Crear Cuenta"
+        />
+      </form>
+      </>
     </Layout>
   </div>
 )
