@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 
 import firebaseConfig from './config';
+import Login from '../pages/login';
 
 class Firebase {
   constructor() {
@@ -19,7 +20,14 @@ class Firebase {
       displayName: nombre
     })
   }
+  
+  // Inicia sesión del usuario
+  async login(email, password) {
+    return this.auth.signInWithEmailAndPassword(email, password);
+  }
+
 }
+
 
 const firebase = new Firebase();
 
