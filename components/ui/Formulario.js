@@ -29,7 +29,7 @@ export const InputSubmit = styled.input`
   text.align: center;
   color: #ffffff;
   font-size: 1.8rem;
-  font-familiy: 'PT Sans', sans-serif;
+  font-family: 'PT Sans', sans-serif;
   font-weight: 700;
   text-decoration: uppercase;
   border: none;
