@@ -28,7 +28,7 @@ export const Campo = styled.div`
     padding: 1rem;
   }
   textarea {
-    height: 400px;
+    height: 300px;
   }
 `;
 
