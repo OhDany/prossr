@@ -39,7 +39,7 @@ const NuevoProducto = () => {
   const router = useRouter();
 
   // Context con las operaciones crud de firebase
-  const { usuario, firebase } = useContext(FirebaseContext)
+  const { usuario, firebase } = useContext(FirebaseContext);
 
   async function crearProducto() {
     
@@ -57,7 +57,11 @@ const NuevoProducto = () => {
       descripcion,
       votos: 0,
       comentarios: [],
-      creado: Date.now()
+      creado: Date.now(),
+      creador: {
+        id: usuario.uid,
+        nombre: usuario.displayName
+      }
     }
 
     // Insertar a la bse de datos
