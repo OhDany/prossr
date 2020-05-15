@@ -53,6 +53,25 @@ const Producto = (props) => {
 
   const { comentarios, creado, descripcion, empresa, nombre, url, urlImagen, votos, creador } = producto;
 
+  // Administrar y validaro los vootos
+  const votarProducto = () => {
+    if (!usuario) {
+      return router.push('/login');
+    }
+
+    // Obtener y sumar los votos
+    const nuevoTotal = votos + 1;
+
+    // Actualizar en la BD
+    firebase.db.collection('productos').doc(id).update({ votos: nuevoTotal})
+
+    // Actualizar el state
+    guardarProducto({
+      ...producto,
+      votos: nuevoTotal
+    })
+  }
+
   return (
     <Layout>
       <>
@@ -75,7 +94,7 @@ const Producto = (props) => {
             { usuario && (
               <>
               <h2>Agraga tu comentario</h2>
-              <for>
+              <form>
                 <Campo>
                   <input 
                     type="text"
@@ -86,7 +105,7 @@ const Producto = (props) => {
                   type="submit"
                   value="Agragar comentario"
                 />
-              </for>
+              </form>
               </>
             )}
 
@@ -113,7 +132,9 @@ const Producto = (props) => {
               >{votos} Votos</p>
 
               { usuario && (
-                <Boton>Votar</Boton>
+                <Boton
+                  onClick={votarProducto}
+                >Votar</Boton>
               )}
             </div>
           </aside>
