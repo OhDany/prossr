@@ -7,8 +7,8 @@ import styled from '@emotion/styled';
 
 // import Layout from '../../components/layout';
 import { FirebaseContext } from '../../firebase';
-import Error404 from '../../components/layout/404';
 import Layout from '../../components/layout/Layout';
+import Error404 from '../../components/layout/404';
 import { Campo, InputSubmit } from '../../components/ui/Formulario';
 import Boton from '../../components/ui/Boton';
 
@@ -20,11 +20,18 @@ const ContenedorProducto = styled.div`
   }
 `;
 
-const Producto = (props) => {
+const CreadorProducto = styled.p`
+  color: var(--naranja);
+  text-transform: uppercase;
+  font-weight: bold;
+`;
+
+const Producto = () => {
 
   // state del componente
   const [ producto, guardarProducto ] = useState({});
   const [ error, guardarError ] = useState(false);
+  const [ comentario, guardarComentario ] = useState({});
 
   // Routing para obtener el ID actual
   const router = useRouter();
@@ -53,7 +60,7 @@ const Producto = (props) => {
 
   const { comentarios, creado, descripcion, empresa, nombre, url, urlImagen, votos, creador, haVotado } = producto;
 
-  // Administrar y validaro los vootos
+  // Administrar y validaro los votos
   const votarProducto = () => {
     if (!usuario) {
       return router.push('/login');
@@ -81,10 +88,50 @@ const Producto = (props) => {
     })
   }
 
+  // Crear comentarios
+  const comentarioChange = e => {
+    guardarComentario({
+      ...comentario,
+      [e.target.name] : e.target.value
+    })
+  }
+
+  // Identifica si el comentario es del creador del producto
+  const esCreador = id => {
+    if (creador.id == id) {
+      return true;
+    }
+  }
+
+  const agregarComentario = e => {
+    e.preventDefault();
+    if (!usuario) {
+      return router.push('/login');
+    }
+
+    // Información extra al comentario
+    comentario.usuarioId = usuario.uid;
+    comentario.usuarioNombre = usuario.displayName;
+
+    // Tomar una copia de comentarios y agregarlos al arreglo
+    const nuevosComentarios = [...comentarios, comentario];
+
+    // Actualizar la BD
+    firebase.db.collection('productos').doc(id).update({
+      comentarios: nuevosComentarios
+    })
+
+    // Actializar el state
+    guardarProducto({
+      ...producto,
+      comentarios: nuevosComentarios
+    })
+  }
+
   return (
     <Layout>
       <>
-      { error && <Error404 /> }
+  { error && <Error404 /> }
 
       <div className="contenedor">
         <h1 css={css`
@@ -103,11 +150,14 @@ const Producto = (props) => {
             { usuario && (
               <>
               <h2>Agraga tu comentario</h2>
-              <form>
+              <form
+                onSubmit={agregarComentario}
+              >
                 <Campo>
                   <input 
                     type="text"
                     name="mensaje"
+                    onChange={comentarioChange}
                   />
                 </Campo>
                 <InputSubmit 
@@ -122,13 +172,36 @@ const Producto = (props) => {
               margin: 2rem 0;
             `}>Comentarios</h2>
 
-            {comentarios.map(comentario => {
-              <li>
-                <p>{comentario.nombre}</p>
-                <p>Escrito por: {comentario.usuarioNombre}</p>
-              </li>
-            })}
+            {comentarios.length === 0 ? "Aún no hay comentarios" : (
+              <ul>
+                {comentarios.map((comentario, i) => (
+                  <li
+                    key={`${comentario.usuarioId}-${i}`}
+                    css={css`
+                      border: 1px solid var(--gris3);
+                      padding: 2rem;
+                    `}
+                  >
+                    <p>{comentario.mensaje}</p>
+                    <p>Escrito por: 
+                      <span
+                      css={css`
+                        font-weight: bold;
+                      `}
+                      >
+                      {' '} {comentario.usuarioNombre}
+                      </span>
+                    </p>
+                    {esCreador(comentario.usuarioId) && 
+                      <CreadorProducto>Es Creador</CreadorProducto>
+                    }
+                  </li>
+                ))}
+              </ul>
+            )}
+            
           </div>
+          
           <aside>
             <Boton
               target="_blank"
@@ -136,7 +209,11 @@ const Producto = (props) => {
               href={url}
             >Visitar URL</Boton>
 
-            <div css={css`margin-top: 5rem`}>
+            <div 
+              css={css`
+                margin-top: 5rem;
+                `}
+            >
               <p css={css`text-align: center;`}
               >{votos} Votos</p>
 
