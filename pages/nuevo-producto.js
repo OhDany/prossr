@@ -62,7 +62,8 @@ const NuevoProducto = () => {
       creador: {
         id: usuario.uid,
         nombre: usuario.displayName
-      }
+      },
+      haVotado: []
     }
 
     // Insertar a la bse de datos
@@ -122,7 +123,7 @@ const NuevoProducto = () => {
                   <input
                     type="text"
                     id="nombre"
-                    placeholder="Tu Nombre"
+                    placeholder="Nombre del Producto"
                     name="nombre"
                     value={nombre}
                     onChange={handleChange}
@@ -137,7 +138,7 @@ const NuevoProducto = () => {
                   <input
                     type="text"
                     id="empresa"
-                    placeholder="Tu Nombre de la empresa"
+                    placeholder="Nombre de la empresa"
                     name="empresa"
                     value={empresa}
                     onChange={handleChange}
