@@ -8,7 +8,7 @@ const Eror404 = () => {
     margin-top: 5rem;
     text-align: center;
   `}
-  >Producto no existe</h1> );
+  >404 No se puede mostrar</h1> );
 }
  
 export default Eror404;

@@ -31,7 +31,7 @@ const Producto = (props) => {
   const { query: { id }} = router;
 
   // Context firebase
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase, usuario } = useContext(FirebaseContext);
 
   useEffect(() => {
     if (id) {
@@ -72,19 +72,23 @@ const Producto = (props) => {
             <p>Por: {creador.nombre} de {empresa}</p>
             <p>{descripcion}</p>
 
-            <h2>Agraga tu comentario</h2>
-            <for>
-              <Campo>
-                <input 
-                  type="text"
-                  name="mensaje"
+            { usuario && (
+              <>
+              <h2>Agraga tu comentario</h2>
+              <for>
+                <Campo>
+                  <input 
+                    type="text"
+                    name="mensaje"
+                  />
+                </Campo>
+                <InputSubmit 
+                  type="submit"
+                  value="Agragar comentario"
                 />
-              </Campo>
-              <InputSubmit 
-                type="submit"
-                value="Agragar comentario"
-              />
-            </for>
+              </for>
+              </>
+            )}
 
             <h2 css={css`
               margin: 2rem 0;
@@ -107,7 +111,10 @@ const Producto = (props) => {
             <div css={css`margin-top: 5rem`}>
               <p css={css`text-align: center;`}
               >{votos} Votos</p>
-              <Boton>Votar</Boton>
+
+              { usuario && (
+                <Boton>Votar</Boton>
+              )}
             </div>
           </aside>
         </ContenedorProducto>
