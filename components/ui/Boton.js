@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 
 const Boton = styled.a`
+  display: block;
   font-weight: 700;
-  trext-transform: uppercase;
+  text-transform: uppercase;
   border: 1px solid #d1d1d1;
   padding: .8rem 2rem;
-  margin-right: 1rem;
+  margin: 2rem auto;
+  text-align: center;
   background-color: ${props => props.bgColor ? '#da552f' : '#ffffff'};
   color: ${props => props.bgColor ? '#ffffff' : '#000000'};
   
